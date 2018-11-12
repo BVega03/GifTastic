@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>LeGifneth</title>
+</head>
+
+<body>
+
+    <!-- <button data-show="The Office">The Office</button>
+    <button data-show="Arrested Development">Arrested Development</button>
+    <button data-show="Game Of Thrones">GOT</button>
+    <button data-show="Friends">Friends</button>
+    <button data-show="Seinfeld">Seinfeld</button> -->
+
+    <section id="display">
+        <div id="buttonsList"></div><br>
+
+        <form id="topic-form">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend" id="rating-buttons">
+                    <button class="btn btn-outline-secondary rating-btn" data-rating="G" type="button">G</button>
+                    <button class="btn btn-outline-secondary rating-btn" data-rating="PG" type="button">PG</button>
+                    <button class="btn btn-outline-secondary rating-btn" data-rating="PG13" type="button">PG-13</button>
+                    <button class="btn btn-outline-secondary rating-btn" data-rating="R" type="button">R</button>
+                </div>
+                <select class="custom-select col-4 col-xs-6 border-secondary" id="inputGroupSelect" aria-label="Example select with button addon">
+                    <option class="gifLimit" value="10" selected>Number of Gifs Viewed per Page</option>
+                    <option class="gifLimit" value="1">1</option>
+                    <option class="gifLimit" value="2">2</option>
+                    <option class="gifLimit" value="5">5</option>
+                    <option class="gifLimit" value="10">10</option>
+                    <option class="gifLimit" value="15">15</option>
+                    <option class="gifLimit" value="20">20</option>
+                </select>
+                <div class="input-group-apend" id="random-button">
+                    <button class="btn btn-outline-secondary randomize-btn" id="randomBtn" data-random="no" type="button"><i
+                            class="fa fa-random" aria-hidden="true"></i> Random</button>
+                </div>
+            </div>
+
+            <input type="text" id="show-input" class="form-control" placeholder="Add a Show">
+
+            <button id="add-show" class="btn btn-outline-secondary m-1" type="submit" value="Add It!"> Add It!
+            </button>
+        </form>
+
+        <div class="row">
+            <div class="col-12">
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <strong>
+                            <i class="fas fa-film"></i> Nifty Gif-tys</strong>
+                    </div>
+                    <div class="card-body row" id="images">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="gifs-appear-here">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var shows = ["The Office", "Arrested Development", "Game of Thrones", "Friends", "Seinfeld",
+                "Breaking Bad",
+                "Dexter", "South Park", "Family Guy", "Sons of Anarchy"
+            ];
+
+            // create topics array buttons
+            function renderButtons() {
+                $('#buttonsList').empty();
+
+                for (var i = 0; i < shows.length; i++) { //create all buttons var a=$('<button>');
+                    var a = $('<button>');
+                    a.addClass('gifs');
+                    a.attr('data-name', shows[i]);
+                    a.text(shows[i]);
+                    $('#buttonsList').append(a);
+                }
+            }
+
+            renderButtons();
+
+            $(document).on('click', '.gifs', function () {
+
+                var show = $(this).html();
+
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                    show + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+                $.ajax({
+                        url: queryURL,
+                        method: "GET"
+                    })
+                    .done(function (response) {
+
+                        var results = response.data;
+                        console.log(results);
+
+                        $("#gifs-appear-here").empty();
+                        for (var j = 0; j < results.length; j++) {
+                            var imageDiv = $('<div>');
+                            var imageView = results[j].images.fixed_height.url;
+                            var still = results[j].images.fixed_height_still.url;
+                            console.log(imageView);
+
+                            var gifImage = $('<img>').attr("src", still).attr('data-animate',
+                                imageView).attr(
+                                'data-still', still);
+                            gifImage.attr('data-state', 'still');
+                            $("#gifs-appear-here").append(gifImage);
+                            gifImage.on('click', playGif);
+
+                            var rating = results[j].rating;
+                            console.log(rating);
+                            var displayRated = $('<p>').text("Rating: " + rating);
+                            $("#gifs-appear-here").append(displayRated);
+                        }
+                    });
+
+                function playGif() {
+                    var state = $(this).attr('data-state');
+                    console.log(state);
+                    if (state == 'still') {
+                        $(this).attr('src', $(this).data('animate'));
+                        $(this).attr('data-state', 'animate');
+                    } else {
+                        $(this).attr('src', $(this).data('still'));
+                        $(this).attr('data-state', 'still');
+                    }
+
+                }
+
+            });
+
+            $(document).on('click', '#add-show', function () {
+                if ($('#show-input').val().trim() == '') {
+                    alert('Input can not be left blank');
+                } else {
+                    var show = $('#show-input').val().trim();
+                    shows.push(show);
+                    $('#show-input').val('');
+                    renderButtons();
+                    return false;
+
+                }
+
+            });
+        });
+    </script>
+</body>
+
+</html>
