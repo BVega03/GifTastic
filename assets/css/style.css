@@ -1,0 +1,18 @@
+body {
+    background-image: url("https://www.rollingstone.com/wp-content/uploads/2018/06/rolling-stone-100-best-tv-shows-of-all-time-c76cdd0b-2e04-4769-84c1-0faab178ddbf.jpg");
+    background-repeat: repeat;
+}
+
+#display {
+    margin: 20px;
+}
+
+#buttonsList {
+    margin: 10px;
+    padding: 10px;
+}
+
+.card-header {
+    font-size: 36px;
+    text-align: center;
+}

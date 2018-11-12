@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>LeGifneth</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
@@ -34,10 +37,10 @@
                     <option class="gifLimit" value="15">15</option>
                     <option class="gifLimit" value="20">20</option>
                 </select>
-                <div class="input-group-apend" id="random-button">
+                <!-- <div class="input-group-apend" id="random-button">
                     <button class="btn btn-outline-secondary randomize-btn" id="randomBtn" data-random="no" type="button"><i
                             class="fa fa-random" aria-hidden="true"></i> Random</button>
-                </div>
+                </div> -->
             </div>
 
             <input type="text" id="show-input" class="form-control" placeholder="Add a Show">
@@ -51,8 +54,7 @@
                 <br>
                 <div class="card">
                     <div class="card-header">
-                        <strong>
-                            <i class="fas fa-film"></i> Nifty Gif-tys</strong>
+                        <strong>Nifty Gif-tys</strong>
                     </div>
                     <div class="card-body row" id="images">
                     </div>
@@ -69,9 +71,7 @@
         $(document).ready(function () {
 
             var shows = ["The Office", "Arrested Development", "Game of Thrones", "Friends", "Seinfeld",
-                "Breaking Bad",
-                "Dexter", "South Park", "Family Guy", "Sons of Anarchy"
-            ];
+                "Breaking Bad", "South Park", "Family Guy"];
 
             // create topics array buttons
             function renderButtons() {
